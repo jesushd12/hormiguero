@@ -23,8 +23,7 @@ router.get('/pedido',function(req,res,next){
 
 	var pedido = {
 			"Pedido":[
-				{"tipo":"Yuca", "cantidad":5},
-				{"tipo":"Cambur", "cantidad":2},
+				{"tipo":"yuca", "cantidad":5},
 				{"tipo":"LagartoSinHueso", "cantidad":1}
 			]
 		};

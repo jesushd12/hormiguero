@@ -2,23 +2,29 @@
 var Hormiga = require('./hormiga.js');
 var Almacen = require('./almacen.js');
 
+var Promise = require("bluebird");
+
 var almacenes = require('./inicializarAlmacenes.js');
 
-
-
-var generarPesoMaximo = (hormigasActivas) =>  Math.floor(Math.random() * (hormigasActivas - 1 + 1) + 1);
+var generarPesoMaximo = (hormigasActivas) =>  Math.floor(Math.random() * (hormigasActivas - 1 + 1) + 1); //Funcion para generar peso maximo
 var hormigasActivas = 1;
 var idPedido = 0;
 
+
+// Recibe las especificaciones de la horamiga (tipocomida, peso maximo, carga , itinerario, inventario, idPedido, idHormiag, encomienda)
+// Crea la hormiga con dicha especificacion y la manda a volar.
 function generarHormiga(especificaciones){
 	var hormiga = new Hormiga(especificaciones);
-	console.log('Hormiga > Tipo comida' + hormiga.obtenerTipoComida + 'Encomienda >'+hormiga.obtenerEncomienda + 'Peso maximo > '+hormiga.obtenerEncomienda);
+	console.log('Hormiga > Tipo comida' + hormiga.obtenerTipoComida + 'Encomienda >'+hormiga.obtenerEncomienda + 'Peso maximo > '+hormiga.obtenerEncomienda+'itinerario:v'+hormiga.obtenerItinerario);
 	hormigasActivas++;
-	hormiga.viajar(hormiga);
+	console.log('Itinerario length'+hormiga.itinerario.length);
+	hormiga.viajar(hormiga)
+	.then(function(result){
+		console.log("Hormiga regreso "+result);
+	});
 }
 
-
-
+// Devuelve la cantidad de un determinado tipo de comida que posee un almacen
 function devolverCantidadComida(obj,tipoComida){
 	obj.inventario.forEach(function(inventario){
 			if(inventario.tipoComida == tipoComida){
@@ -28,6 +34,7 @@ function devolverCantidadComida(obj,tipoComida){
 	});
 }
 
+// Funcion que ayuda a bubblesort ( Se debe manejar la asincronia para usarla)
 function swap(myArr, indexOne, indexTwo){
   var tmpVal = myArr[indexOne];
   myArr[indexOne] = myArr[indexTwo];
@@ -35,21 +42,8 @@ function swap(myArr, indexOne, indexTwo){
   return myArr;
 }
 
-function quicksort(data,tipoComida) {
-    if (data.length == 0) return [];
-  
-    var left = [], right = [], pivot = data[0];
-  
-    for (var i = 1; i < data.length; i++) {
-        if(devolverCantidadComida(data[i],tipoComida) < devolverCantidadComida(pivot,tipoComida))
-            left.push(data[i])
-        else
-            right.push(data[i]);
-    }
-  
-    return quicksort(left,tipoComida).concat(pivot, quicksort(right,tipoComida));
-}
 
+// Ordena de mayor a menor un arreglo de almacenes con respecto a la cantidad de un tipo de comida
 function bubbleSortItinerario(myArr,tipoComida){
   var size = myArr.length;
   for( var pass = 1; pass < size; pass++ ){ // outer loop
@@ -78,6 +72,8 @@ function bubbleSortItinerario(myArr,tipoComida){
   return myArr;
 }
 
+// Busca el itinerario de la hormiga
+// Recibe un tipo de comida y crea un arreglo con la lista de almacenes destinos en orden descendentes a sus cantidades disponibles
 function buscarItinerario(tipocomida){
 	var itinerario = [];
 	almacenes.almacenes.forEach(function(almacen){
@@ -86,12 +82,13 @@ function buscarItinerario(tipocomida){
 				itinerario.push(almacen);
 		});
 	});
-	console.log("Bubble: "+JSON.stringify(bubbleSortItinerario(itinerario,tipocomida)));
-	return quicksort(itinerario,tipocomida);
+	return bubbleSortItinerario(itinerario,tipocomida);
 }
 
 
 
+// La funcion recibe un pedido de la hormiga reina, dicho pedido contiene los tipos de comida y cantidades que ella desea.
+// El objetivo de la funcion es el de crear a las hormigas necesarias para satisfacer dicho pedido.
 function recibirPedido(pedido){
 	pedido.Pedido.forEach(function(item){
 		console.log(item.tipo);
@@ -101,6 +98,7 @@ function recibirPedido(pedido){
 		var encomienda = cantidad;
 		var encomiendaHormiga = 0;
 		var pesoMaximo = 0 ;
+		var itinerario = 0;
 		while(encomienda!=0){
 			pesoMaximo = generarPesoMaximo(hormigasActivas);
 			console.log('PesoMaximo ='+pesoMaximo);
@@ -111,7 +109,8 @@ function recibirPedido(pedido){
 				encomiendaHormiga = pesoMaximo;
 				encomienda = encomienda - pesoMaximo;
 			}
-			var especificaciones = {"tipoComida":tipoComida,"pesoMax":pesoMaximo,"carga":0,"itinerario":0,"inventario":0,"idPedido":idPedido,"idHormiga":0,"encomienda":encomiendaHormiga};
+			var itinerario = buscarItinerario(tipoComida);
+			var especificaciones = {"tipoComida":tipoComida,"pesoMax":pesoMaximo,"carga":0,"itinerario":itinerario,"inventario":0,"idPedido":idPedido,"idHormiga":0,"encomienda":encomiendaHormiga,"ubicacionActual":0,"proximoDestino":0};
 			generarHormiga(especificaciones);
 		}
 	});
@@ -120,6 +119,22 @@ function recibirPedido(pedido){
 }
 
 
+/* Funcion para ordenar itinerario usando QUICKSORT, falta manejar la asincronia
+function quicksort(data,tipoComida) {
+    if (data.length == 0) return [];
+  
+    var left = [], right = [], pivot = data[0];
+  
+    for (var i = 1; i < data.length; i++) {
+        if(devolverCantidadComida(data[i],tipoComida) < devolverCantidadComida(pivot,tipoComida))
+            left.push(data[i])
+        else
+            right.push(data[i]);
+    }
+  
+    return quicksort(left,tipoComida).concat(pivot, quicksort(right,tipoComida));
+}
+*/
 
 module.exports.generarHormiga = generarHormiga;
 module.exports.recibirPedido = recibirPedido;

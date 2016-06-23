@@ -6,8 +6,8 @@ var almacen1 = {
 						ip:"127.0.0.1",
 						inventario:[
 							{tipoComida:"yuca",cantidad:50},
-							{tipoComida:"cambur",cantidad:50},
-							{tipoComida:"lagartosinhueso",cantidad:10},
+							{tipoComida:"Cambur",cantidad:50},
+							{tipoComida:"Azucar",cantidad:10},
 						],
 						idAlmacen:1
 					};
@@ -16,7 +16,7 @@ var almacen2 = {
 						ip:"127.0.0.1",
 						inventario:[
 							{tipoComida:"mango",cantidad:50},
-							{tipoComida:"pepino",cantidad:20},
+							{tipoComida:"Perrarina",cantidad:20},
 							{tipoComida:"cuca",cantidad:10}
 						],
 						idAlmacen:2
@@ -26,7 +26,7 @@ var almacen3 = {
 						ip:"127.0.0.1",
 						inventario:[
 							{tipoComida:"yuca",cantidad:100},
-							{tipoComida:"pepino",cantidad:20},
+							{tipoComida:"Cambur",cantidad:20},
 							{tipoComida:"cuca",cantidad:10}
 						],
 						idAlmacen:3
@@ -37,7 +37,7 @@ var almacen4 = {
 						inventario:[
 							{tipoComida:"yuca",cantidad:30},
 							{tipoComida:"pepino",cantidad:20},
-							{tipoComida:"cuca",cantidad:10}
+							{tipoComida:"LagartoSinHueso",cantidad:10}
 						],
 						idAlmacen:3
 };
