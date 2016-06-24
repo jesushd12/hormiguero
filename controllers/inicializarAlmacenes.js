@@ -7,7 +7,7 @@ var almacen1 = {
 						inventario:[
 							{tipoComida:"yuca",cantidad:50},
 							{tipoComida:"Cambur",cantidad:50},
-							{tipoComida:"Azucar",cantidad:10},
+							{tipoComida:"LagartoSinHueso",cantidad:10},
 						],
 						idAlmacen:1
 					};
@@ -16,7 +16,7 @@ var almacen2 = {
 						ip:"127.0.0.1",
 						inventario:[
 							{tipoComida:"mango",cantidad:50},
-							{tipoComida:"Perrarina",cantidad:20},
+							{tipoComida:"LagartoSinHueso",cantidad:20},
 							{tipoComida:"cuca",cantidad:10}
 						],
 						idAlmacen:2

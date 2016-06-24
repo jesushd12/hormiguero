@@ -78,6 +78,9 @@ module.exports = class Hormiga{
 		this.ubicacionActual++;
 
 		console.log('Ubicacion actual >', this.ubicacionActual);
+
+
+		
 		return new Promise(function(resolve,reject){
 			var client = new Eureca.Client({ uri: 'http://'+itinerario[proximoDestino].ip+':'+itinerario[proximoDestino].puerto+'/' });
 			
@@ -87,8 +90,8 @@ module.exports = class Hormiga{
 				  console.log('Regreso la  hormiga con carga >', result);
 				  resolve(result);
 				 // console.log('Hormiga probando objetos[0]: '+ result.itinerario[0].puerto)
+				});
 			});
-		});
 		});
 		
 	}
