@@ -2,7 +2,6 @@
 var Hormiga = require('./hormiga.js');
 var Almacen = require('./almacen.js');
 
-var Promise = require("bluebird");
 
 var almacenes = require('./inicializarAlmacenes.js');
 
@@ -15,12 +14,13 @@ var idPedido = 0;
 // Crea la hormiga con dicha especificacion y la manda a volar.
 function generarHormiga(especificaciones){
 	var hormiga = new Hormiga(especificaciones);
-	console.log('Hormiga > Tipo comida' + hormiga.obtenerTipoComida + 'Encomienda >'+hormiga.obtenerEncomienda + 'Peso maximo > '+hormiga.obtenerEncomienda+'itinerario:v'+hormiga.obtenerItinerario);
+	console.log('Hormiga > Tipo comida ' + hormiga.obtenerTipoComida + ' Encomienda >'+hormiga.obtenerEncomienda + 'Peso maximo > '+hormiga.obtenerEncomienda+'itinerario:'+hormiga.obtenerItinerario);
 	hormigasActivas++;
-	console.log('Itinerario length'+hormiga.itinerario.length);
+	console.log('Itinerario length '+hormiga.itinerario.length);
 	hormiga.viajar(hormiga)
 	.then(function(result){
-		console.log("Hormiga regreso "+result);
+		var hormigaResultado = new Hormiga(result);
+		console.log("Hormiga regreso a generarHormiga"+hormigaResultado + ' Peso MAX ' + hormigaResultado.obtenerPesoMaximo);
 	});
 }
 
