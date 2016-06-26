@@ -22,7 +22,7 @@ var almacen2 = {
 						idAlmacen:2
 					};
 var almacen3 = {
-						puerto:"8003",
+						puerto:"8002",
 						ip:"127.0.0.1",
 						inventario:[
 							{tipoComida:"yuca",cantidad:100},
@@ -32,7 +32,7 @@ var almacen3 = {
 						idAlmacen:3
 };
 var almacen4 = {
-						puerto:"8002",
+						puerto:"8003",
 						ip:"127.0.0.1",
 						inventario:[
 							{tipoComida:"yuca",cantidad:30},

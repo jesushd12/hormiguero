@@ -14,13 +14,21 @@ var idPedido = 0;
 // Crea la hormiga con dicha especificacion y la manda a volar.
 function generarHormiga(especificaciones){
 	var hormiga = new Hormiga(especificaciones);
-	console.log('Hormiga > Tipo comida' + hormiga.obtenerTipoComida + 'Encomienda >'+hormiga.obtenerEncomienda + 'Peso maximo > '+hormiga.obtenerEncomienda+'itinerario:v'+hormiga.obtenerItinerario);
+	console.log('Hormiga > Tipo comida ' + hormiga.obtenerTipoComida + ' Encomienda >'+hormiga.obtenerEncomienda + 'Peso maximo > '+hormiga.obtenerEncomienda+'itinerario:'+hormiga.obtenerItinerario);
 	hormigasActivas++;
+<<<<<<< HEAD
 	console.log('Itinerario length'+hormiga.itinerario.length);
 	
 	hormiga.viajar(hormiga)
 	.then(function(result){
 		console.log("Hormiga regreso "+result.tipoComida+' carga: '+result.carga);
+=======
+	console.log('Itinerario length '+hormiga.itinerario.length);
+	hormiga.viajar(hormiga)
+	.then(function(result){
+		var hormigaResultado = new Hormiga(result);
+		console.log("Hormiga regreso a generarHormiga"+hormigaResultado + ' Peso MAX ' + hormigaResultado.obtenerPesoMaximo);
+>>>>>>> origin/master
 	});
 
 	//hormiga.viajarRPC(hormiga);

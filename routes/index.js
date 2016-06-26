@@ -23,7 +23,11 @@ router.get('/pedido',function(req,res,next){
 
 	var pedido = {
 			"Pedido":[
+<<<<<<< HEAD
 				{"tipo":"LagartoSinHueso", "cantidad":5},
+=======
+				//{"tipo":"yuca", "cantidad":5},
+>>>>>>> origin/master
 				{"tipo":"yuca", "cantidad":1}
 			]
 		};

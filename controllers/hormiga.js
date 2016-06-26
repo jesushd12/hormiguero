@@ -58,7 +58,7 @@ module.exports = class Hormiga{
 
 
 	buscarProximoDestino(){
-		console.log('Tamano itinerario'+this.itinerario.lenght);
+		console.log('Tamano itinerario Hormiga Servidor'+this.itinerario.length);
 		if(this.ubicacionActual<this.itinerario.length) {
 			this.proximoDestino++; 
 			return true; 
