@@ -1,6 +1,5 @@
 'use strict';
 var Eureca = require('eureca.io');
-var Promise = require("bluebird");
 
 module.exports = class Hormiga{
 
@@ -31,6 +30,10 @@ module.exports = class Hormiga{
 	  }
 	   get obtenerCarga(){
 	  	return this.carga;
+	  }
+
+	  cuantoFalta(){
+	  	return this.encomienda - this.carga;
 	  }
 
 	  get obtenerItinerario(){
@@ -72,27 +75,114 @@ module.exports = class Hormiga{
 	}
 
 
-	viajar(hormiga){
+viajar(hormiga){
 		let itinerario = this.itinerario;
 		let proximoDestino = this.proximoDestino;
 		this.ubicacionActual++;
 
 		console.log('Ubicacion actual >', this.ubicacionActual);
 
-
-		
 		return new Promise(function(resolve,reject){
 			var client = new Eureca.Client({ uri: 'http://'+itinerario[proximoDestino].ip+':'+itinerario[proximoDestino].puerto+'/' });
 			
 			//var client = new Eureca.Client({ uri: 'http://'+this.itinerario[this.proximoDestino].ip+':'+this.itinerario[this.proximoDestino].puerto+'/' });
 			client.ready(function (serverProxy) {
-	    		serverProxy.hello(hormiga).onReady(function(result) {
-				  console.log('Regreso la  hormiga con carga >', result);
-				  resolve(result);
+	    		serverProxy.hello(hormiga)
+	    		.then(function(hormigas) {
+				  console.log('Regreso la  hormiga servidor con carga >'+ hormigas);
+				  resolve(hormigas);
 				 // console.log('Hormiga probando objetos[0]: '+ result.itinerario[0].puerto)
 				});
 			});
 		});
+		
+	}
+
+
+/*
+viajar(hormiga){
+		console.log('Ubicacion actual >'+ this.ubicacionActual+' proximoDestino'+this.proximoDestino + 'Tamano '+this.itinerario.length);
+		if(this.cuantoFalta()==0){
+			//Termino su trabajo
+			    return new Promise(function(resolve,reject){
+					resolve(hormiga);
+				});
+		}else{
+			if(this.buscarProximoDestino())
+		     {
+		     // Busca proximo almacen
+		     	let itinerario = this.itinerario;
+				let proximoDestino = this.proximoDestino;
+				this.ubicacionActual++;
+			    return new Promise(function(resolve,reject){
+			    	var client = new Eureca.Client({ uri: 'http://'+itinerario[proximoDestino].ip+':'+itinerario[proximoDestino].puerto+'/' });
+					client.ready(function (serverProxy) {
+
+				    	 serverProxy.hello(hormiga).onReady(function(result) {
+							  console.log('Regreso la  hormiga con carga >', result);
+							  	resolve(result);	  
+						});
+					});
+				});
+		     }else{
+		     	//No consiguio comida y se regresa
+		     	return new Promise(function(resolve,reject){
+					resolve(hormiga);
+				});
+		     }
+		}	
+	}
+	*/
+
+
+
+
+	
+/*
+	viajar(hormiga){
+		let itinerario = this.itinerario;
+		let proximoDestino = this.proximoDestino;
+		console.log('Ubicacion actual >', this.ubicacionActual);
+		this.ubicacionActual++;
+		var client = new Eureca.Client({ uri: 'http://'+itinerario[proximoDestino].ip+':'+itinerario[proximoDestino].puerto+'/' });
+
+		return new Promise(function(resolve,reject){
+			client.ready(function (serverProxy) {
+				serverProxy.hello(hormiga)
+ +	    		.then(function(hormigas) {
+ +				  console.log('Regreso la  hormiga servidor con carga >'+ hormigas);
+ +				  resolve(hormigas);
+  				 // console.log('Hormiga probando objetos[0]: '+ result.itinerario[0].puerto)
+  				});
+
+	     	serverProxy.hello(hormiga).onReady(function(result) {
+				  console.log('Regreso la  hormiga con carga >', result);
+				
+				  	resolve(result);
+				
+				});
+	     	
+			});
+		});
+		
+	}
+*/
+
+	viajarRPC(hormiga){
+		let itinerario = this.itinerario;
+		let proximoDestino = this.proximoDestino;
+		console.log('Ubicacion actual >', this.ubicacionActual);
+		this.ubicacionActual++;
+		var client = new Eureca.Client({ uri: 'http://'+itinerario[proximoDestino].ip+':'+itinerario[proximoDestino].puerto+'/' });
+
+			client.ready(function (serverProxy) {
+
+	     	serverProxy.hello(hormiga).onReady(function(result) {
+				  //console.log('Regreso la  hormiga con carga >', result);
+				  return result;
+				});
+			});
+		
 		
 	}
 	

@@ -2,7 +2,6 @@
 var Hormiga = require('./hormiga.js');
 var Almacen = require('./almacen.js');
 
-var Promise = require("bluebird");
 
 var almacenes = require('./inicializarAlmacenes.js');
 
@@ -18,10 +17,37 @@ function generarHormiga(especificaciones){
 	console.log('Hormiga > Tipo comida' + hormiga.obtenerTipoComida + 'Encomienda >'+hormiga.obtenerEncomienda + 'Peso maximo > '+hormiga.obtenerEncomienda+'itinerario:v'+hormiga.obtenerItinerario);
 	hormigasActivas++;
 	console.log('Itinerario length'+hormiga.itinerario.length);
+	
 	hormiga.viajar(hormiga)
 	.then(function(result){
-		console.log("Hormiga regreso "+result);
+		console.log("Hormiga regreso "+result.tipoComida+' carga: '+result.carga);
 	});
+
+	//hormiga.viajarRPC(hormiga);
+}
+
+function generarHormigas(especificaciones){
+	var promises = [];
+	especificaciones.forEach(function(especificacion){
+		var hormiga = new Hormiga(especificacion);
+		console.log('Hormiga > Tipo comida' + hormiga.obtenerTipoComida + 'Encomienda >'+hormiga.obtenerEncomienda + 'Peso maximo > '+hormiga.obtenerEncomienda+'itinerario:v'+hormiga.obtenerItinerario);
+		hormigasActivas++;
+		console.log('Itinerario length'+hormiga.itinerario.length);
+		promises.push(hormiga.viajar(hormiga));
+	});
+
+/*
+	Promise.all(promises.map)
+	.then(function(result){
+		console.log('REsult length'+ result[0].obtenerTipoComida);
+		result.forEach(function(resultado){
+			console.log('Resultado: '+resultado.obtenerTipoComida);
+		});
+	});
+*/
+	
+
+	//hormiga.viajarRPC(hormiga);
 }
 
 // Devuelve la cantidad de un determinado tipo de comida que posee un almacen
@@ -90,6 +116,7 @@ function buscarItinerario(tipocomida){
 // La funcion recibe un pedido de la hormiga reina, dicho pedido contiene los tipos de comida y cantidades que ella desea.
 // El objetivo de la funcion es el de crear a las hormigas necesarias para satisfacer dicho pedido.
 function recibirPedido(pedido){
+	var arrayEspecificaciones = [];
 	pedido.Pedido.forEach(function(item){
 		console.log(item.tipo);
 		console.log(item.cantidad);
@@ -111,9 +138,36 @@ function recibirPedido(pedido){
 			}
 			var itinerario = buscarItinerario(tipoComida);
 			var especificaciones = {"tipoComida":tipoComida,"pesoMax":pesoMaximo,"carga":0,"itinerario":itinerario,"inventario":0,"idPedido":idPedido,"idHormiga":0,"encomienda":encomiendaHormiga,"ubicacionActual":0,"proximoDestino":0};
-			generarHormiga(especificaciones);
+			
+			arrayEspecificaciones.push(especificaciones);
+			hormigasActivas++;
+			//generarHormiga(especificaciones);
 		}
 	});
+	Promise.all(arrayEspecificaciones.map(function(esp){
+		var hormiga = new Hormiga(esp);
+		console.log('Esp: '+esp);
+		var promise = hormiga.viajar(hormiga);
+		return promise;
+	}))
+	.then(function(result){
+
+		result.forEach(function(resultado){
+			console.log('Hormiga tipoComida: '+resultado.tipoComida+' Carga: '+resultado.carga +' Peso Max: '+resultado.pesoMax+'Encomienda: '+resultado.encomienda);
+			hormigasActivas--;
+		});
+	});
+	
+	/*
+	Promise.all(generarHormigas(arrayEspecificaciones).map)
+	.then(function(result){
+		console.log('REsult length'+ result[0].obtenerTipoComida);
+		result.forEach(function(resultado){
+			console.log('Resultado: '+resultado.obtenerTipoComida);
+		});
+	});
+
+	*/
 	idPedido++;
 
 }

@@ -42,9 +42,15 @@ var almacen4 = {
 						idAlmacen:3
 };
 
+var servidorPrincipal = {
+	puerto: "3000",
+	ip:"127.0.0.1"
+};
+
 almacenes.push(almacen1);
 almacenes.push(almacen2);
 almacenes.push(almacen3);
 almacenes.push(almacen4);
 module.exports.almacenes = almacenes;
+module.exports.servidorPrincipal = servidorPrincipal;
 
