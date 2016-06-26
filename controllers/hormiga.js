@@ -16,7 +16,9 @@ module.exports = class Hormiga{
 	    this.encomienda = especificaciones.encomienda;
 	    this.ubicacionActual = especificaciones.ubicacionActual;
 	    this.proximoDestino = especificaciones.proximoDestino;
+	    
 	  }
+
 
 	  get obtenerTipoComida(){
 	  	return this.tipoComida;
